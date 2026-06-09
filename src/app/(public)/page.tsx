@@ -8,7 +8,7 @@ import AnnouncementSection from '@/components/home/AnnouncementSection';
 import { safeGetProjects, safeGetDashboardStats, safeGetSiteSettings } from '@/lib/firebase/firestore';
 import ClientAnalytics from '@/components/shared/ClientAnalytics';
 
-export const revalidate = 3600;
+export const revalidate = 0;
 
 export default async function HomePage() {
   const [featuredProjects, stats, allProjects, settings] = await Promise.all([
