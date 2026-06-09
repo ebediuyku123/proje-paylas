@@ -383,9 +383,46 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
 
             {/* ZIP File */}
             <div>
-              <label className="block text-sm font-medium text-[#A1A1AA] mb-2">İndirilebilir ZIP Dosyası</label>
-              <div 
-                {...getZipProps()} 
+              <label className="block text-sm font-medium text-[#A1A1AA] mb-2">İndirilebilir Dosya</label>
+              
+              {/* URL input */}
+              <div className="flex gap-2 mb-3">
+                <input
+                  type="url"
+                  value={formData.zipFile}
+                  onChange={(e) => {
+                    setZipFileObj(null);
+                    setFormData(prev => ({
+                      ...prev,
+                      zipFile: e.target.value,
+                      zipFileName: e.target.value ? (prev.zipFileName || 'dosya.zip') : '',
+                    }));
+                  }}
+                  placeholder="https://drive.google.com/... veya GitHub Releases linki"
+                  className="flex-1 bg-[#161616] border border-[#333333] rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-[#3B82F6] placeholder-[#52525B]"
+                />
+                {formData.zipFile && (
+                  <button type="button" onClick={() => setFormData(prev => ({ ...prev, zipFile: '', zipFileName: '' }))} className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+              {formData.zipFile && (
+                <div className="mb-3">
+                  <label className="block text-xs text-[#52525B] mb-1">Dosya adı (gösterilecek)</label>
+                  <input
+                    type="text"
+                    value={formData.zipFileName}
+                    onChange={(e) => setFormData(prev => ({ ...prev, zipFileName: e.target.value }))}
+                    placeholder="proje.zip"
+                    className="w-full bg-[#161616] border border-[#333333] rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-[#3B82F6]"
+                  />
+                </div>
+              )}
+
+              <p className="text-xs text-[#52525B] mb-2">veya dosya yükle (Firebase Storage gerektirir)</p>
+              <div
+                {...getZipProps()}
                 className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
                   isZipDrag ? 'border-green-500 bg-green-500/10' : 'border-[#333333] hover:border-[#444444] bg-[#161616]'
                 }`}
@@ -394,11 +431,9 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
                 <div className="flex flex-col items-center gap-2">
                   <FileArchive className="w-6 h-6 text-[#A1A1AA]" />
                   {zipFileObj ? (
-                    <p className="text-green-500 font-medium">Seçildi: {zipFileObj.name} ({formatFileSize(zipFileObj.size)})</p>
-                  ) : formData.zipFileName ? (
-                    <p className="text-green-500 font-medium">Mevcut: {formData.zipFileName}</p>
+                    <p className="text-green-500 font-medium text-sm">Seçildi: {zipFileObj.name} ({formatFileSize(zipFileObj.size)})</p>
                   ) : (
-                    <p className="text-[#A1A1AA]">ZIP dosyası yüklemek için sürükleyin veya tıklayın</p>
+                    <p className="text-[#A1A1AA] text-sm">ZIP dosyası sürükleyin veya tıklayın</p>
                   )}
                 </div>
               </div>
