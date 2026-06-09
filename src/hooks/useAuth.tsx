@@ -21,11 +21,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Timeout: if Firebase doesn't respond in 5s, stop loading
+    const timeout = setTimeout(() => setLoading(false), 5000);
+
     const unsubscribe = onAuthChange((u) => {
+      clearTimeout(timeout);
       setUser(u);
       setLoading(false);
     });
-    return () => unsubscribe();
+
+    return () => {
+      clearTimeout(timeout);
+      unsubscribe();
+    };
   }, []);
 
   return (

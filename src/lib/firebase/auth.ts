@@ -26,5 +26,11 @@ export const getCurrentUser = (): User | null => {
 export const isAdmin = (user: User | null): boolean => {
   if (!user) return false;
   const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-  return user.email === adminEmail;
+  if (!adminEmail) {
+    console.error('NEXT_PUBLIC_ADMIN_EMAIL is not set');
+    return false;
+  }
+  const result = user.email?.toLowerCase().trim() === adminEmail.toLowerCase().trim();
+  console.log('[isAdmin]', user.email, '===', adminEmail, '→', result);
+  return result;
 };
