@@ -155,3 +155,17 @@ export interface ContactMessage {
   read: boolean;
   createdAt: string;
 }
+
+export interface VisitorRecord {
+  ipHash: string;
+  firstVisit: string;
+  lastVisit: string;
+  visitCount: number;
+  userAgent: string;
+  pages: string[];
+}
+
+export interface VisitorStats {
+  totalVisits: number;
+  uniqueVisitors: number;
+}

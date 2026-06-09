@@ -64,6 +64,13 @@
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
     }
+    {
+      "collectionGroup": "visitors",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "lastVisit", "order": "DESCENDING" }
+      ]
+    }
   ],
   "fieldOverrides": []
 }

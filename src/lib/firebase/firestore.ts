@@ -18,7 +18,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './config';
 import { EMPTY_DASHBOARD_STATS } from './defaults';
-import type { Project, SiteSettings, AnalyticsEvent, DashboardStats, BlogPost, ContactMessage, Feedback } from '@/types';
+import type { Project, SiteSettings, AnalyticsEvent, DashboardStats, BlogPost, ContactMessage, Feedback, VisitorRecord, VisitorStats } from '@/types';
 
 const mapProjectDoc = (d: { id: string; data: () => Record<string, unknown> }): Project => {
   const data = d.data();
@@ -390,4 +390,31 @@ export const markFeedbackRead = async (id: string): Promise<void> => {
 
 export const deleteFeedback = async (id: string): Promise<void> => {
   await deleteDoc(doc(db, 'feedbacks', id));
+};
+
+// ─── VISITORS ─────────────────────────────────────────────────────────────────
+
+export const getVisitorStats = async (): Promise<VisitorStats> => {
+  const ref = doc(db, 'stats', 'visitors');
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return { totalVisits: 0, uniqueVisitors: 0 };
+  return snap.data() as VisitorStats;
+};
+
+export const getRecentVisitors = async (limitCount = 50): Promise<VisitorRecord[]> => {
+  const q = query(
+    collection(db, 'visitors'),
+    orderBy('lastVisit', 'desc'),
+    limit(limitCount)
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map(d => ({
+    ...d.data(),
+    firstVisit: d.data().firstVisit instanceof Timestamp
+      ? d.data().firstVisit.toDate().toISOString()
+      : d.data().firstVisit,
+    lastVisit: d.data().lastVisit instanceof Timestamp
+      ? d.data().lastVisit.toDate().toISOString()
+      : d.data().lastVisit,
+  })) as VisitorRecord[];
 };

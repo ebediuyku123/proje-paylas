@@ -11,9 +11,15 @@ interface StatsSectionProps {
     totalViews: number;
   };
   linesOfCode?: string;
+  /** If true show real numbers, otherwise add offset so public sees boosted count */
+  isAdmin?: boolean;
 }
 
-export default function StatsSection({ stats, linesOfCode }: StatsSectionProps) {
+// Public-facing offset so the site doesn't look empty while real traffic builds up
+const VIEW_OFFSET = 15;
+
+export default function StatsSection({ stats, linesOfCode, isAdmin = false }: StatsSectionProps) {
+  const displayViews = isAdmin ? stats.totalViews : stats.totalViews + VIEW_OFFSET;
   const statItems = [
     {
       label: 'Toplam Proje',
@@ -29,7 +35,7 @@ export default function StatsSection({ stats, linesOfCode }: StatsSectionProps) 
     },
     {
       label: 'Görüntülenme',
-      value: stats.totalViews,
+      value: displayViews,
       icon: Eye,
       color: '#8B5CF6',
     },

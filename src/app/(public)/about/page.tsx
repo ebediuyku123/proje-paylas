@@ -6,7 +6,7 @@ import { GithubIcon, LinkedinIcon, TwitterIcon } from '@/components/shared/Brand
 import ReactMarkdown from 'react-markdown';
 import TechBadge from '@/components/shared/TechBadge';
 
-export const revalidate = 3600;
+export const revalidate = 0;
 
 export const metadata = {
   title: 'Hakkımda',
