@@ -1,0 +1,35 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "admin@example.com";
+    }
+
+    function isPublishedProject() {
+      return resource.data.published == true;
+    }
+
+    match /projects/{projectId} {
+      allow get: if isPublishedProject() || isAdmin();
+      allow list: if isPublishedProject() || isAdmin();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin()
+        || (
+          request.auth == null
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewCount', 'downloadCount'])
+        );
+    }
+
+    match /settings/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /analytics/{document=**} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

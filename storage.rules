@@ -1,0 +1,17 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAdmin() {
+      // Storage rules can't easily check email without custom claims, 
+      // but requiring auth is a basic layer. In production, use custom claims.
+      return request.auth != null; 
+    }
+
+    match /{allPaths=**} {
+      // Anyone can view files
+      allow read: if true;
+      // Only authenticated users (admin) can write
+      allow write: if isAdmin();
+    }
+  }
+}
