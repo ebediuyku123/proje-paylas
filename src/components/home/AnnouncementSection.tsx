@@ -1,40 +1,35 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Megaphone } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 interface AnnouncementSectionProps {
   text: string;
 }
 
-const DEFAULT_TEXT = '🚀 Yenilikler yakında burada! Admin panelinden bu alanı düzenleyebilirsiniz.';
+const DEFAULT_TEXT = 'Yenilikler yakında burada.';
 
 export default function AnnouncementSection({ text }: AnnouncementSectionProps) {
   const content = text?.trim() || DEFAULT_TEXT;
 
   return (
-    <div className="h-full flex items-center justify-center py-8 lg:py-0">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="relative bg-[#111111] border border-[#222222] rounded-2xl p-10 md:p-14 text-center overflow-hidden w-full"
-      >
-        {/* Background glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#3B82F6]/5 to-purple-500/5 pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[200px] bg-[#3B82F6]/10 blur-[80px] pointer-events-none" />
-
-        <div className="relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-full text-[#3B82F6] text-sm font-medium mb-6">
-            <Megaphone className="w-4 h-4" />
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="h-full flex items-center justify-center py-6 lg:py-0"
+    >
+      <div className="w-full border-l-2 border-[#3B82F6] pl-6 py-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Zap className="w-3.5 h-3.5 text-[#3B82F6]" />
+          <span className="text-[#3B82F6] text-xs font-semibold uppercase tracking-widest">
             Yenilikler
-          </div>
-
-          <p className="text-white text-lg md:text-xl leading-relaxed whitespace-pre-wrap">
-            {content}
-          </p>
+          </span>
         </div>
-      </motion.div>
-    </div>
+        <p className="text-[#A1A1AA] text-sm leading-relaxed whitespace-pre-wrap">
+          {content}
+        </p>
+      </div>
+    </motion.div>
   );
 }

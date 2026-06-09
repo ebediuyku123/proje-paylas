@@ -31,13 +31,16 @@ export default async function HomePage() {
       <CategorySection counts={categoryCounts} />
       <TechStackSection />
       <StatsSection stats={stats} linesOfCode={settings?.linesOfCode || ''} />
-      {/* Announcement + CTA side by side on large screens, stacked on mobile */}
-      <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col lg:flex-row items-stretch gap-6">
-        <div className="flex-1">
-          <AnnouncementSection text={settings?.announcement || ''} />
-        </div>
-        <div className="flex-1">
-          <CTASection />
+      {/* Announcement + CTA */}
+      <div className="max-w-5xl mx-auto px-4 py-16">
+        <div className="flex flex-col md:flex-row gap-12 md:gap-16">
+          <div className="flex-1">
+            <AnnouncementSection text={settings?.announcement || ''} />
+          </div>
+          <div className="hidden md:block w-px bg-[#1a1a1a]" />
+          <div className="flex-1">
+            <CTASection />
+          </div>
         </div>
       </div>
     </>
