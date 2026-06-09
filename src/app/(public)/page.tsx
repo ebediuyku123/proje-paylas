@@ -33,12 +33,10 @@ export default async function HomePage() {
       <StatsSection stats={stats} linesOfCode={settings?.linesOfCode || ''} />
       {/* Announcement + CTA side by side on large screens, stacked on mobile */}
       <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col lg:flex-row items-stretch gap-6">
-        {settings?.announcement && (
-          <div className="flex-1">
-            <AnnouncementSection text={settings.announcement} />
-          </div>
-        )}
-        <div className={settings?.announcement ? 'flex-1' : 'w-full'}>
+        <div className="flex-1">
+          <AnnouncementSection text={settings?.announcement || ''} />
+        </div>
+        <div className="flex-1">
           <CTASection />
         </div>
       </div>

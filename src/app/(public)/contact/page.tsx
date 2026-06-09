@@ -48,9 +48,7 @@ export default function ContactPage() {
               </div>
               <h3 className="text-lg font-semibold text-[var(--foreground)] mb-1">E-posta</h3>
               <p className="text-[var(--muted)] mb-4">Bana doğrudan e-posta gönderebilirsiniz.</p>
-              <a href="mailto:ahmet20alya20@gmail.com" className="text-[#3B82F6] hover:text-[#2563EB] font-medium transition-colors">
-                ahmet20alya20@gmail.com
-              </a>
+              <span className="text-[#A1A1AA] text-sm">Yakında</span>
             </div>
 
             <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-6">

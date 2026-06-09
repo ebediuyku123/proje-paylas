@@ -22,7 +22,8 @@ function LoginForm() {
       const user = await signIn(email, password);
 
       const idToken = await user.getIdToken();
-      document.cookie = `auth-session=${idToken}; path=/; max-age=86400; secure; samesite=strict`;
+      const isSecure = window.location.protocol === 'https:';
+      document.cookie = `auth-session=${idToken}; path=/; max-age=86400${isSecure ? '; secure' : ''}; samesite=lax`;
 
       toast.success('Giriş başarılı, yönlendiriliyorsunuz...');
       // Hard navigation so the cookie is sent with the first request
