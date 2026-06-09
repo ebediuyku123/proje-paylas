@@ -269,24 +269,44 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
             {/* Cover Image */}
             <div>
               <label className="block text-sm font-medium text-[#A1A1AA] mb-2">Kapak Görseli</label>
+              
+              {/* URL Input */}
+              <div className="mb-3">
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    value={formData.coverImage}
+                    onChange={(e) => { setFormData(prev => ({ ...prev, coverImage: e.target.value })); setCoverFile(null); }}
+                    placeholder="https://i.imgur.com/... veya herhangi bir görsel URL"
+                    className="flex-1 bg-[#161616] border border-[#333333] rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-[#3B82F6] placeholder-[#52525B]"
+                  />
+                  {formData.coverImage && (
+                    <button type="button" onClick={() => setFormData(prev => ({ ...prev, coverImage: '' }))} className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+                {formData.coverImage && !coverFile && (
+                  <div className="mt-2 rounded-lg overflow-hidden border border-[#333333] aspect-video max-h-40">
+                    <img src={formData.coverImage} alt="Cover preview" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
+                  </div>
+                )}
+              </div>
+
+              <p className="text-xs text-[#52525B] mb-2">veya dosya yükle</p>
               <div 
                 {...getCoverProps()} 
-                className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
+                className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
                   isCoverDrag ? 'border-[#3B82F6] bg-[#3B82F6]/10' : 'border-[#333333] hover:border-[#444444] bg-[#161616]'
                 }`}
               >
                 <input {...getCoverInputProps()} />
                 {coverFile ? (
-                  <p className="text-[#3B82F6] font-medium">Seçildi: {coverFile.name}</p>
-                ) : formData.coverImage ? (
-                  <div className="flex flex-col items-center gap-2">
-                    <img src={formData.coverImage} alt="Cover" className="h-32 object-contain rounded" />
-                    <p className="text-sm text-[#A1A1AA]">Değiştirmek için tıklayın veya sürükleyin</p>
-                  </div>
+                  <p className="text-[#3B82F6] font-medium text-sm">Seçildi: {coverFile.name}</p>
                 ) : (
                   <div className="flex flex-col items-center gap-2 text-[#A1A1AA]">
-                    <ImageIcon className="w-8 h-8" />
-                    <p>Görsel sürükleyin veya seçin (Max 5MB)</p>
+                    <ImageIcon className="w-6 h-6" />
+                    <p className="text-sm">Görsel sürükleyin veya seçin</p>
                   </div>
                 )}
               </div>
@@ -295,6 +315,36 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
             {/* Gallery */}
             <div>
               <label className="block text-sm font-medium text-[#A1A1AA] mb-2">Galeri Görselleri</label>
+              
+              {/* URL Input for gallery */}
+              <div className="flex gap-2 mb-3">
+                <input
+                  type="url"
+                  id="galleryUrlInput"
+                  placeholder="Görsel URL ekle ve + butonuna bas"
+                  className="flex-1 bg-[#161616] border border-[#333333] rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-[#3B82F6] placeholder-[#52525B]"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const val = (e.target as HTMLInputElement).value.trim();
+                      if (val) { setFormData(prev => ({ ...prev, galleryImages: [...prev.galleryImages, val] })); (e.target as HTMLInputElement).value = ''; }
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const input = document.getElementById('galleryUrlInput') as HTMLInputElement;
+                    const val = input?.value.trim();
+                    if (val) { setFormData(prev => ({ ...prev, galleryImages: [...prev.galleryImages, val] })); input.value = ''; }
+                  }}
+                  className="px-3 py-2 bg-[#3B82F6] hover:bg-[#2563EB] text-white rounded-lg transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                </button>
+              </div>
+
+              <p className="text-xs text-[#52525B] mb-2">veya dosya yükle</p>
               <div 
                 {...getGalleryProps()} 
                 className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors mb-4 ${
@@ -304,7 +354,7 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
                 <input {...getGalleryInputProps()} />
                 <div className="flex flex-col items-center gap-2 text-[#A1A1AA]">
                   <Plus className="w-6 h-6" />
-                  <p>Görselleri sürükleyin veya seçin</p>
+                  <p className="text-sm">Görselleri sürükleyin veya seçin</p>
                 </div>
               </div>
 
