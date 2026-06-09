@@ -53,7 +53,18 @@ const defaultSettings = {
 
 async function main() {
   console.log('Signing in as', ADMIN_EMAIL);
-  await signInWithEmailAndPassword(auth, ADMIN_EMAIL, password);
+  try {
+    await signInWithEmailAndPassword(auth, ADMIN_EMAIL, password);
+  } catch (error) {
+    if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+      const { createUserWithEmailAndPassword } = await import('firebase/auth');
+      console.log('User not found. Creating user...');
+      await createUserWithEmailAndPassword(auth, ADMIN_EMAIL, password);
+      console.log('User created successfully.');
+    } else {
+      throw error;
+    }
+  }
 
   const settingsRef = doc(db, 'settings', 'main');
   const settingsSnap = await getDoc(settingsRef);

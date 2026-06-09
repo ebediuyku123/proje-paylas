@@ -10,6 +10,7 @@ import TechBadge from '@/components/shared/TechBadge';
 import ShareButtons from '@/components/shared/ShareButtons';
 import GallerySlider from '@/components/projects/GallerySlider';
 import ProjectCard from '@/components/projects/ProjectCard';
+import ClientAnalytics from '@/components/shared/ClientAnalytics';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -81,6 +82,7 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   return (
     <>
+      <ClientAnalytics type="view" projectId={project.id} projectTitle={project.title} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

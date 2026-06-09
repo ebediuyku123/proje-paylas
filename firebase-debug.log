@@ -1,0 +1,32 @@
+[debug] [2026-06-09T14:20:25.786Z] ----------------------------------------------------------------------
+[debug] [2026-06-09T14:20:25.787Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ahmet\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\firebase-tools\lib\bin\firebase.js deploy --only firestore:rules,firestore:indexes,storage
+[debug] [2026-06-09T14:20:25.788Z] CLI Version:   15.19.1
+[debug] [2026-06-09T14:20:25.788Z] Platform:      win32
+[debug] [2026-06-09T14:20:25.788Z] Node Version:  v24.15.0
+[debug] [2026-06-09T14:20:25.788Z] Time:          Tue Jun 09 2026 17:20:25 GMT+0300 (Türkiye Standart Saati)
+[debug] [2026-06-09T14:20:25.788Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-06-09T14:20:25.789Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-06-09T14:20:28.001Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-06-09T14:20:28.101Z] Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+    at GoogleAuth.getApplicationDefaultAsync (C:\Users\ahmet\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\google-auth-library\build\src\auth\googleauth.js:287:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async GoogleAuth._GoogleAuth_determineClient (C:\Users\ahmet\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\google-auth-library\build\src\auth\googleauth.js:834:32)
+    at async GoogleAuth.getClient (C:\Users\ahmet\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\google-auth-library\build\src\auth\googleauth.js:698:20)
+    at async GoogleAuth.getAccessToken (C:\Users\ahmet\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\google-auth-library\build\src\auth\googleauth.js:722:24)
+    at async autoAuth (C:\Users\ahmet\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\firebase-tools\lib\requireAuth.js:28:19)
+    at async requireAuth (C:\Users\ahmet\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\firebase-tools\lib\requireAuth.js:90:20)
+    at async requirePermissions (C:\Users\ahmet\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\firebase-tools\lib\requirePermissions.js:17:5)
+    at async C:\Users\ahmet\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\firebase-tools\lib\command.js:278:17
+[error] 
+[error] Error: Failed to authenticate, have you run firebase login?
+[debug] [2026-06-09T14:20:28.363Z] Error: EBUSY: resource busy or locked, unlink 'E:\ProjePaylaş\firebase-debug.log'
+    at Object.unlinkSync (node:fs:1932:11)
+    at process.<anonymous> (C:\Users\ahmet\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\firebase-tools\lib\bin\cli.js:44:16)
+    at process.emit (node:events:521:24)
+    at process.exit (node:internal/process/per_thread:236:15)
+    at Timeout._onTimeout (C:\Users\ahmet\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\firebase-tools\lib\errorOut.js:20:17)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+[error] 
+[error] Error: An unexpected error has occurred.

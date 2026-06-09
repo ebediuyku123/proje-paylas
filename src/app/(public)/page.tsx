@@ -5,6 +5,7 @@ import TechStackSection from '@/components/home/TechStackSection';
 import StatsSection from '@/components/home/StatsSection';
 import CTASection from '@/components/home/CTASection';
 import { safeGetProjects, safeGetDashboardStats } from '@/lib/firebase/firestore';
+import ClientAnalytics from '@/components/shared/ClientAnalytics';
 
 export const revalidate = 3600;
 
@@ -22,6 +23,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <ClientAnalytics type="view" projectId="home" projectTitle="Ana Sayfa" />
       <HeroSection />
       <FeaturedProjects projects={featuredProjects} />
       <CategorySection counts={categoryCounts} />
