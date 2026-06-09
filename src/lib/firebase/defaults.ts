@@ -26,4 +26,6 @@ export const DEFAULT_SITE_SETTINGS: Omit<SiteSettings, 'id' | 'updatedAt'> = {
   seoTitle: 'ProjePaylaş — Yazılım Projeleri',
   seoDescription: 'Modern yazılım projelerini keşfet, incele ve indir.',
   ogImage: '',
+  announcement: '🚀 Yenilikler — Yeni projeler ve güncellemeler burada!',
+  linesOfCode: '',
 };

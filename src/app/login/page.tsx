@@ -25,7 +25,9 @@ function LoginForm() {
       document.cookie = `auth-session=${idToken}; path=/; max-age=86400; secure; samesite=strict`;
 
       toast.success('Giriş başarılı, yönlendiriliyorsunuz...');
-      router.push(redirect);
+      // Hard navigation so the cookie is sent with the first request
+      // and Firebase auth state is fully initialised on the new page load.
+      window.location.href = redirect;
     } catch (error: unknown) {
       toast.error('Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
       console.error(error);

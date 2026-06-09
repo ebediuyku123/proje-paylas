@@ -24,9 +24,41 @@
   --color-danger: #EF4444;
 }
 
-:root {
+/* ─── Dark Mode (default) ─────────────────────────────────────────────────── */
+:root,
+.dark {
   --background: #0A0A0A;
   --foreground: #FFFFFF;
+  --card-bg: #111111;
+  --card-border: #222222;
+  --elevated-bg: #161616;
+  --input-bg: #161616;
+  --input-border: #333333;
+  --muted: #A1A1AA;
+  --muted-foreground: #52525B;
+  --scrollbar-track: #111111;
+  --scrollbar-thumb: #333333;
+  --scrollbar-thumb-hover: #444444;
+  --nav-hover: #161616;
+  --badge-bg: #1a1a1a;
+}
+
+/* ─── Light Mode ─────────────────────────────────────────────────────────── */
+.light {
+  --background: #F8F9FA;
+  --foreground: #0A0A0A;
+  --card-bg: #FFFFFF;
+  --card-border: #E5E7EB;
+  --elevated-bg: #F1F5F9;
+  --input-bg: #F9FAFB;
+  --input-border: #D1D5DB;
+  --muted: #6B7280;
+  --muted-foreground: #9CA3AF;
+  --scrollbar-track: #F1F5F9;
+  --scrollbar-thumb: #CBD5E1;
+  --scrollbar-thumb-hover: #94A3B8;
+  --nav-hover: #F1F5F9;
+  --badge-bg: #F1F5F9;
 }
 
 *, *::before, *::after {
@@ -40,112 +72,74 @@ html {
 }
 
 body {
-  background: #0A0A0A;
-  color: #FFFFFF;
+  background: var(--background);
+  color: var(--foreground);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ─── Scrollbar ─────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #111111;
-}
-::-webkit-scrollbar-thumb {
-  background: #333333;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #444444;
-}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
 
 /* ─── Selection ─────────────────────────────────────────────────────────────── */
-::selection {
-  background: rgba(59, 130, 246, 0.3);
-  color: #fff;
-}
+::selection { background: rgba(59, 130, 246, 0.3); color: var(--foreground); }
 
 /* ─── Focus visible ─────────────────────────────────────────────────────────── */
-:focus-visible {
-  outline: 2px solid #3B82F6;
-  outline-offset: 2px;
-}
+:focus-visible { outline: 2px solid #3B82F6; outline-offset: 2px; }
 
 /* ─── Animations ─────────────────────────────────────────────────────────────── */
 @keyframes gradient-shift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
-
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-
 @keyframes shimmer {
   0%   { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
-
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
   50%       { box-shadow: 0 0 20px 4px rgba(59, 130, 246, 0.2); }
 }
-
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-8px); }
 }
-
 @keyframes marquee {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
 /* ─── Utility Classes ─────────────────────────────────────────────────────────── */
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradient-shift 4s ease infinite;
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.5s ease forwards;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.3s ease forwards;
-}
-
+.animate-gradient { background-size: 200% 200%; animation: gradient-shift 4s ease infinite; }
+.animate-fade-in-up { animation: fade-in-up 0.5s ease forwards; }
+.animate-fade-in { animation: fade-in 0.3s ease forwards; }
 .animate-shimmer {
-  background: linear-gradient(90deg, #111 25%, #1a1a1a 50%, #111 75%);
+  background: linear-gradient(90deg, var(--card-bg) 25%, var(--elevated-bg) 50%, var(--card-bg) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-marquee {
-  animation: marquee 25s linear infinite;
-}
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-marquee { animation: marquee 25s linear infinite; }
 
 .gradient-text {
-  background: linear-gradient(135deg, #FFFFFF 0%, #A1A1AA 100%);
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--muted) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
 .gradient-text-blue {
   background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
   -webkit-background-clip: text;
@@ -154,61 +148,57 @@ body {
 }
 
 .glass {
-  background: rgba(17, 17, 17, 0.8);
+  background: rgba(var(--card-bg-rgb, 17,17,17), 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--card-border);
 }
+.dark .glass { background: rgba(17,17,17,0.8); }
+.light .glass { background: rgba(255,255,255,0.8); }
 
 .glass-card {
-  background: rgba(17, 17, 17, 0.9);
+  background: var(--card-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid #222222;
+  border: 1px solid var(--card-border);
   border-radius: 12px;
 }
 
-.glow-blue {
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
-}
+.glow-blue { box-shadow: 0 0 30px rgba(59, 130, 246, 0.15); }
 
-.card-hover {
-  transition: all 0.2s ease;
-}
+.card-hover { transition: all 0.2s ease; }
 .card-hover:hover {
   transform: translateY(-2px);
-  border-color: #333333;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  border-color: var(--input-border);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* ─── Prose overrides for dark theme ─────────────────────────────────────────── */
+/* ─── Prose overrides for dark/light theme ────────────────────────────────── */
 .prose-dark {
-  color: #A1A1AA;
+  color: var(--muted);
 }
 .prose-dark h1, .prose-dark h2, .prose-dark h3,
 .prose-dark h4, .prose-dark h5, .prose-dark h6 {
-  color: #FFFFFF;
+  color: var(--foreground);
 }
-.prose-dark a {
-  color: #3B82F6;
-}
+.prose-dark a { color: #3B82F6; }
 .prose-dark code {
-  background: #1a1a1a;
-  color: #e2e8f0;
+  background: var(--elevated-bg);
+  color: var(--foreground);
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.875em;
 }
 .prose-dark pre {
-  background: #111111;
-  border: 1px solid #222222;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
 }
 .prose-dark blockquote {
   border-left-color: #3B82F6;
-  color: #A1A1AA;
+  color: var(--muted);
 }
 
-/* ─── Noise overlay for depth ────────────────────────────────────────────────── */
+/* ─── Noise overlay ───────────────────────────────────────────────────────── */
 .noise::after {
   content: '';
   position: absolute;
@@ -218,25 +208,24 @@ body {
   border-radius: inherit;
 }
 
-/* ─── Grid pattern ───────────────────────────────────────────────────────────── */
+/* ─── Grid pattern ───────────────────────────────────────────────────────── */
 .grid-pattern {
   background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    linear-gradient(var(--card-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--card-border) 1px, transparent 1px);
   background-size: 40px 40px;
+  opacity: 0.3;
 }
 
-/* ─── Markdown editor dark theme fix ─────────────────────────────────────────── */
+/* ─── Markdown editor ────────────────────────────────────────────────────── */
 .w-md-editor {
-  background: #111111 !important;
-  color: #FFFFFF !important;
-  border-color: #222222 !important;
+  background: var(--card-bg) !important;
+  color: var(--foreground) !important;
+  border-color: var(--card-border) !important;
 }
 .w-md-editor-toolbar {
-  background: #161616 !important;
-  border-color: #222222 !important;
+  background: var(--elevated-bg) !important;
+  border-color: var(--card-border) !important;
 }
 .w-md-editor-text-pre > code,
-.w-md-editor-text-input {
-  color: #FFFFFF !important;
-}
+.w-md-editor-text-input { color: var(--foreground) !important; }

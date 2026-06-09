@@ -4,6 +4,7 @@ import {
   getDoc,
   getDocs,
   addDoc,
+  setDoc,
   updateDoc,
   deleteDoc,
   query,
@@ -17,7 +18,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './config';
 import { EMPTY_DASHBOARD_STATS } from './defaults';
-import type { Project, SiteSettings, AnalyticsEvent, DashboardStats } from '@/types';
+import type { Project, SiteSettings, AnalyticsEvent, DashboardStats, BlogPost, ContactMessage, Feedback } from '@/types';
 
 const mapProjectDoc = (d: { id: string; data: () => Record<string, unknown> }): Project => {
   const data = d.data();
@@ -138,14 +139,18 @@ export const getSiteSettings = async (): Promise<SiteSettings | null> => {
 
 export const updateSiteSettings = async (data: Partial<SiteSettings>): Promise<void> => {
   const ref = doc(db, 'settings', 'main');
-  await updateDoc(ref, { ...data, updatedAt: serverTimestamp() });
+  const snap = await getDoc(ref);
+  if (snap.exists()) {
+    await updateDoc(ref, { ...data, updatedAt: serverTimestamp() });
+  } else {
+    await setDoc(ref, { ...data, updatedAt: serverTimestamp() });
+  }
 };
 
 export const initSiteSettings = async (data: Omit<SiteSettings, 'id' | 'updatedAt'>): Promise<void> => {
   const ref = doc(db, 'settings', 'main');
   const snap = await getDoc(ref);
   if (!snap.exists()) {
-    const { setDoc } = await import('firebase/firestore');
     await setDoc(ref, { ...data, updatedAt: serverTimestamp() });
   }
 };
@@ -255,3 +260,134 @@ export async function safeGetProjectBySlug(slug: string): Promise<Project | null
     return null;
   }
 }
+
+// ─── BLOG ─────────────────────────────────────────────────────────────────────
+
+const mapBlogDoc = (d: { id: string; data: () => Record<string, unknown> }): BlogPost => {
+  const data = d.data();
+  return {
+    id: d.id,
+    ...data,
+    createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toDate().toISOString() : data.createdAt,
+    updatedAt: data.updatedAt instanceof Timestamp ? data.updatedAt.toDate().toISOString() : data.updatedAt,
+  } as BlogPost;
+};
+
+export const getBlogPosts = async (publishedOnly = true): Promise<BlogPost[]> => {
+  const constraints: QueryConstraint[] = [];
+  if (publishedOnly) constraints.push(where('published', '==', true));
+  constraints.push(orderBy('createdAt', 'desc'));
+  const snapshot = await getDocs(query(collection(db, 'blog'), ...constraints));
+  return snapshot.docs.map(d => mapBlogDoc({ id: d.id, data: () => d.data() as Record<string, unknown> }));
+};
+
+export const getBlogPostBySlug = async (slug: string, publishedOnly = true): Promise<BlogPost | null> => {
+  const constraints: QueryConstraint[] = [where('slug', '==', slug)];
+  if (publishedOnly) constraints.push(where('published', '==', true));
+  const snapshot = await getDocs(query(collection(db, 'blog'), ...constraints, limit(1)));
+  if (snapshot.empty) return null;
+  const d = snapshot.docs[0];
+  return mapBlogDoc({ id: d.id, data: () => d.data() as Record<string, unknown> });
+};
+
+export const getBlogPostById = async (id: string): Promise<BlogPost | null> => {
+  const ref = doc(db, 'blog', id);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return null;
+  return mapBlogDoc({ id: snap.id, data: () => snap.data() as Record<string, unknown> });
+};
+
+export const createBlogPost = async (data: Omit<BlogPost, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> => {
+  const ref = await addDoc(collection(db, 'blog'), {
+    ...data,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+  return ref.id;
+};
+
+export const updateBlogPost = async (id: string, data: Partial<BlogPost>): Promise<void> => {
+  await updateDoc(doc(db, 'blog', id), { ...data, updatedAt: serverTimestamp() });
+};
+
+export const deleteBlogPost = async (id: string): Promise<void> => {
+  await deleteDoc(doc(db, 'blog', id));
+};
+
+// ─── CONTACT MESSAGES ─────────────────────────────────────────────────────────
+
+export const createContactMessage = async (
+  data: Omit<ContactMessage, 'id' | 'createdAt' | 'read'>
+): Promise<void> => {
+  await addDoc(collection(db, 'messages'), {
+    ...data,
+    read: false,
+    createdAt: serverTimestamp(),
+  });
+};
+
+export const getContactMessages = async (): Promise<ContactMessage[]> => {
+  const snapshot = await getDocs(
+    query(collection(db, 'messages'), orderBy('createdAt', 'desc'))
+  );
+  return snapshot.docs.map(d => ({
+    id: d.id,
+    ...d.data(),
+    createdAt: d.data().createdAt instanceof Timestamp
+      ? d.data().createdAt.toDate().toISOString()
+      : d.data().createdAt,
+  })) as ContactMessage[];
+};
+
+export const markMessageRead = async (id: string): Promise<void> => {
+  await updateDoc(doc(db, 'messages', id), { read: true });
+};
+
+export const deleteContactMessage = async (id: string): Promise<void> => {
+  await deleteDoc(doc(db, 'messages', id));
+};
+
+// ─── FEEDBACKS ────────────────────────────────────────────────────────────────
+
+export const submitFeedback = async (
+  data: Omit<Feedback, 'id' | 'createdAt' | 'read'>
+): Promise<void> => {
+  await addDoc(collection(db, 'feedbacks'), {
+    ...data,
+    read: false,
+    createdAt: serverTimestamp(),
+  });
+};
+
+export const getFeedbacks = async (projectId?: string): Promise<Feedback[]> => {
+  const constraints: QueryConstraint[] = [orderBy('createdAt', 'desc')];
+  if (projectId) constraints.unshift(where('projectId', '==', projectId));
+  const snapshot = await getDocs(query(collection(db, 'feedbacks'), ...constraints));
+  return snapshot.docs.map(d => ({
+    id: d.id,
+    ...d.data(),
+    createdAt: d.data().createdAt instanceof Timestamp
+      ? d.data().createdAt.toDate().toISOString()
+      : d.data().createdAt,
+  })) as Feedback[];
+};
+
+export const checkFeedbackExists = async (projectId: string, ipHash: string): Promise<boolean> => {
+  const snapshot = await getDocs(
+    query(
+      collection(db, 'feedbacks'),
+      where('projectId', '==', projectId),
+      where('ipHash', '==', ipHash),
+      limit(1)
+    )
+  );
+  return !snapshot.empty;
+};
+
+export const markFeedbackRead = async (id: string): Promise<void> => {
+  await updateDoc(doc(db, 'feedbacks', id), { read: true });
+};
+
+export const deleteFeedback = async (id: string): Promise<void> => {
+  await deleteDoc(doc(db, 'feedbacks', id));
+};

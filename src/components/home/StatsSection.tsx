@@ -10,9 +10,10 @@ interface StatsSectionProps {
     totalDownloads: number;
     totalViews: number;
   };
+  linesOfCode?: string;
 }
 
-export default function StatsSection({ stats }: StatsSectionProps) {
+export default function StatsSection({ stats, linesOfCode }: StatsSectionProps) {
   const statItems = [
     {
       label: 'Toplam Proje',
@@ -32,12 +33,14 @@ export default function StatsSection({ stats }: StatsSectionProps) {
       icon: Eye,
       color: '#8B5CF6',
     },
-    {
-      label: 'Satır Kod',
-      value: '100K+', // Placeholder for aesthetic
-      icon: TerminalSquare,
-      color: '#F59E0B',
-    },
+    ...(linesOfCode
+      ? [{
+          label: 'Satır Kod',
+          value: linesOfCode,
+          icon: TerminalSquare,
+          color: '#F59E0B',
+        }]
+      : []),
   ];
 
   return (
@@ -46,7 +49,7 @@ export default function StatsSection({ stats }: StatsSectionProps) {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[300px] bg-[#3B82F6]/5 blur-[100px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+        <div className={`grid grid-cols-2 gap-8 md:gap-12 ${statItems.length === 4 ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
           {statItems.map((item, i) => {
             const Icon = item.icon;
             return (

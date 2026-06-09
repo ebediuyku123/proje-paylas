@@ -71,6 +71,8 @@ export interface SiteSettings {
   seoTitle: string;
   seoDescription: string;
   ogImage: string;
+  announcement: string;
+  linesOfCode: string;
   updatedAt: string;
 }
 
@@ -118,4 +120,38 @@ export interface ProjectFilters {
   category: string;
   technology: string;
   sort: SortOption;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  content: string;
+  coverImage: string;
+  tags: string[];
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Feedback {
+  id: string;
+  projectId: string;
+  projectTitle: string;
+  rating: number;       // 1-5
+  message: string;
+  ipHash: string;       // SHA-256 of IP - stored server-side
+  createdAt: string;
+  read: boolean;
+}
+
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  read: boolean;
+  createdAt: string;
 }

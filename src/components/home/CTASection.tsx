@@ -6,12 +6,12 @@ import { ArrowRight, Mail } from 'lucide-react';
 
 export default function CTASection() {
   return (
-    <section className="py-24 px-4 relative overflow-hidden">
+    <section className="h-full px-4 relative overflow-hidden flex items-center justify-center py-8 lg:py-0">
       {/* Background elements */}
       <div className="absolute inset-0 grid-pattern opacity-50" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-[#3B82F6]/10 to-purple-500/10 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-4xl mx-auto relative z-10 text-center bg-[#111111]/80 backdrop-blur-xl border border-[#222222] rounded-3xl p-10 md:p-16 shadow-2xl">
+      <div className="max-w-2xl mx-auto relative z-10 w-full text-center bg-[#111111]/80 backdrop-blur-xl border border-[#222222] rounded-3xl p-10 md:p-16 shadow-2xl">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -43,6 +43,7 @@ export const ADMIN_NAV_LINKS = [
   { href: '/admin', label: 'Dashboard', icon: 'LayoutDashboard' },
   { href: '/admin/projects', label: 'Projeler', icon: 'FolderOpen' },
   { href: '/admin/media', label: 'Medya', icon: 'Image' },
+  { href: '/admin/messages', label: 'Mesajlar', icon: 'Mail' },
   { href: '/admin/analytics', label: 'Analitik', icon: 'BarChart2' },
   { href: '/admin/settings', label: 'Ayarlar', icon: 'Settings' },
 ] as const;

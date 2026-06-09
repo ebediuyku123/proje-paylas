@@ -13,6 +13,7 @@ const iconMap: Record<string, React.ElementType> = {
   LayoutDashboard: require('lucide-react').LayoutDashboard,
   FolderOpen: require('lucide-react').FolderOpen,
   Image: require('lucide-react').Image,
+  Mail: require('lucide-react').Mail,
   Settings: require('lucide-react').Settings,
   BarChart2: require('lucide-react').BarChart2,
 };

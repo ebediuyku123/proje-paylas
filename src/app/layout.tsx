@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/hooks/useAuth';
 import { Toaster } from 'sonner';
+import ThemeProvider from '@/components/shared/ThemeProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -45,22 +46,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="tr" className={inter.variable}>
-      <body className="bg-[#0A0A0A] text-white antialiased">
-        <AuthProvider>
-          {children}
-          <Toaster
-            theme="dark"
-            position="bottom-right"
-            toastOptions={{
-              style: {
-                background: '#111111',
-                border: '1px solid #222222',
-                color: '#FFFFFF',
-              },
-            }}
-          />
-        </AuthProvider>
+    <html lang="tr" className={inter.variable} suppressHydrationWarning>
+      <body className="bg-background text-foreground antialiased transition-colors duration-300">
+        <ThemeProvider>
+          <AuthProvider>
+            {children}
+            <Toaster
+              theme="system"
+              position="bottom-right"
+              toastOptions={{
+                className: 'dark:bg-[#111111] dark:border-[#222222] dark:text-white bg-white border-gray-200 text-gray-900',
+              }}
+            />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
